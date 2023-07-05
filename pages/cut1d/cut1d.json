@@ -1,0 +1,11 @@
+{
+    "usingComponents": {
+        "t-row": "tdesign-miniprogram/row/row",
+        "t-col": "tdesign-miniprogram/col/col",
+        "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
+        "t-cell": "tdesign-miniprogram/cell/cell",
+        "t-icon": "tdesign-miniprogram/icon/icon",
+        "cax": "../../components/cax/cax",
+        "senx_table": "../../components/senx_table/senx_table"
+    }
+}

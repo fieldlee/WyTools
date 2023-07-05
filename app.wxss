@@ -1,0 +1,14 @@
+page {
+  background: #f0f0f0;
+  --td-brand-color: navy;
+  --td-primary-color:#00a870;
+  --td-rate-selected-color: #ed7b2f; /* 选中的颜色 */
+  --td-rate-unselected-color: #e3e6eb; /* 未选中的颜色 */
+}
+.demo-title {
+    font-size: 24rpx;
+    font-weight: 300;
+    line-height: 64rpx;
+    margin: 32rpx 32rpx 0;
+    color: var(--td-font-gray-1, rgba(0, 0, 0, 0.9));
+  }

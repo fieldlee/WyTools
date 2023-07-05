@@ -1,0 +1,47 @@
+{
+    "pages": [
+        "pages/cut1d/cut1d",
+        "pages/cut2d/cut2d",
+        "pages/profile/profile"
+    ],
+    "usingComponents": {
+        "t-button": "tdesign-miniprogram/button/button",
+        "t-icon": "tdesign-miniprogram/icon/icon",
+        "t-grid": "tdesign-miniprogram/grid/grid",
+        "t-grid-item": "tdesign-miniprogram/grid-item/grid-item",
+        "t-input": "tdesign-miniprogram/input/input",
+        "t-divider": "tdesign-miniprogram/divider/divider",
+        "t-back-top": "tdesign-miniprogram/back-top/back-top"
+    },
+    "window": {
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#333333",
+        "backgroundColor": "#333333",
+        "navigationBarTitleText": "万业工具",
+        "navigationBarTextStyle": "white"
+    },
+    "tabBar": {
+        "selectedColor": "#f9f9f9",
+        "color": "#999999",
+        "backgroundColor": "#333333",
+        "borderStyle": "black",
+        "list": [{
+            "pagePath": "pages/cut1d/cut1d",
+            "text": "分条",
+            "iconPath": "assets/format-line.png",
+            "selectedIconPath": "assets/format-line.png"
+        }, {
+            "pagePath": "pages/cut2d/cut2d",
+            "text": "分块",
+            "iconPath": "assets/land-plots.png",
+            "selectedIconPath": "assets/land-plots.png"
+        }, {
+            "pagePath": "pages/profile/profile",
+            "text": "我的",
+            "iconPath": "assets/account.png",
+            "selectedIconPath": "assets/account.png"
+        }]
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+}
