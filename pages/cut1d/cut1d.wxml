@@ -1,37 +1,58 @@
 <!--显示母卷设置-->
 <view class="input-example">
     <view class="demo-title">母卷设置</view>
-    <block wx:for="{{mode_data.parents}}" wx:for-index="idx"  wx:for-item="item">
+    <block wx:for="{{mode_data.parents}}" wx:for-index="idx" wx:for-item="item">
         <view class="t-view">
-            <t-input placeholder="请输入长度" suffix="" type="number" align="left" value="{{item.width}}" data-field-name="mode_data.parents[{{idx}}].width" bind:change='handleInputChange'/>
-            <t-input placeholder="请输入个数" suffix="" type="number" align="left" value="{{item.quantity}}" data-field-name="mode_data.parents[{{idx}}].quantity" bind:change='handleInputChange'/>
-            <t-input placeholder="请输入重量" suffix="" type="number" align="left" value="{{item.weight}}" data-field-name="mode_data.parents[{{idx}}].weight" bind:change='handleInputChange'/>
+            <t-input placeholder="请输入长度" suffix="" type="number" align="left" value="{{item.width}}" data-field-name="mode_data.parents[{{idx}}].width" bind:change='handleInputChange' />
+            <t-input placeholder="请输入个数" suffix="" type="number" align="left" value="{{item.quantity}}" data-field-name="mode_data.parents[{{idx}}].quantity" bind:change='handleInputChange' />
+            <t-input placeholder="请输入重量" suffix="" type="number" align="left" value="{{item.weight}}" data-field-name="mode_data.parents[{{idx}}].weight" bind:change='handleInputChange' />
         </view>
     </block>
 
+    <view>
+      <t-row>
+  <t-col span="8" >
+    <t-input layout="horizontal" size="small" tips="边丝宽度" type="number" align="left" value="{{side}}" data-field-name="side" bind:change='handleInputChange' />
+  </t-col>
+  <t-col span="8" >
+    <t-input layout="horizontal"  tips="最低使用率" type="number" align="left" value="{{percent}}" data-field-name="percent" bind:change='handleInputChange' />
+  </t-col>
+  <t-col span="8" >
     <view class="t-view-right">
         <t-button theme="danger" style="margin-right: 20rpx;" size="small" icon="" shape="circle" aria-label="减少" bind:tap="parentReduce">-</t-button>
         <t-button theme="primary" size="small" icon="" shape="circle" aria-label="添加" bind:tap="parentAdd">+</t-button>
     </view>
+  </t-col>
+</t-row>
+    </view>
+
+    
 
 </view>
 <!--显示分条设置-->
 <view class="input-example">
     <view class="demo-title">分条设置</view>
-    <view class="t-view">
-        <t-input placeholder="请输入长度" suffix="" align="left" type="number" />
-        <t-input placeholder="请输入个数" suffix="" align="left" type="number" />
-        <t-input placeholder="请输入预定重量" suffix="" align="left" type="number" />
-    </view>
+    <block wx:for="{{mode_data.childs}}" wx:for-index="idx" wx:for-item="item">
+        <view class="t-view">
+            <t-input placeholder="请输入长度" suffix="" align="left" type="number" value="{{item.width}}" data-field-name="mode_data.childs[{{idx}}].width" bind:change='handleInputChange' />
+            <t-input placeholder="请输入个数" suffix="" align="left" type="number" value="{{item.quantity}}" data-field-name="mode_data.childs[{{idx}}].quantity" bind:change='handleInputChange' />
+            <t-input placeholder="请输入预定重量" suffix="" align="left" type="number" value="{{item.weight}}" data-field-name="mode_data.childs[{{idx}}].weight" bind:change='handleInputChange' />
+        </view>
+    </block>
     <view class="t-view-right">
-        <t-button theme="danger" style="margin-right: 20rpx;" size="small" icon="" shape="circle" aria-label="添加">-</t-button>
-        <t-button theme="primary" size="small" icon="" shape="circle" aria-label="减少">+</t-button>
+        <t-button theme="danger" style="margin-right: 20rpx;" size="small" icon="" shape="circle" aria-label="添加" bind:tap="childReduce">-</t-button>
+        <t-button theme="primary" size="small" icon="" shape="circle" aria-label="减少" bind:tap="childAdd">+</t-button>
     </view>
 </view>
 <!--显示计算按钮-->
-<view class="t-view-right">
-    <t-button theme="primary" icon="app" style="margin-right: 20rpx;" content="按长度计算" size="medium" class="margin"></t-button>
-    <t-button theme="primary" icon="app" content="按预定重量计算" size="medium" class="margin"></t-button>
+<view class="input-example">
+    <view class="t-view-button">
+        <t-button theme="primary" icon="app" size="medium" bind:tap="calcuStockByLen">
+            按长度计算
+        </t-button>
+        <t-button theme="primary" icon="app" theme="light" size="medium" bind:tap="calcuStockByWeight">
+        按预定重量计算</t-button>
+    </view>
 </view>
 <!--显示待选方案-->
 <view class="input-example">
