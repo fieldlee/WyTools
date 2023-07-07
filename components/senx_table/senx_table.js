@@ -65,7 +65,7 @@ Component({
         // 无数据时信息
         msg: {
             type: String,
-            value: '暂无数据~'
+            value: '~暂无数据~'
         },
         // thead 固定
         isFixed: {

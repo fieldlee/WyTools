@@ -8,19 +8,15 @@ export function request(params){
   }
   
   return new Promise((resolve,reject)=>{
+    console.log(dataObj);
     wx.request({
       url: baseURL + params.url,
       method:params.method || "GET",
       data:dataObj,
       header:headerObj,
       success:res=>{
-        if(res.data.errCode!=0){
+        if(res.data.code!=0){
           reject(res.data);
-          wx.showToast({
-            title: res.data.errMsg,
-            mask:true,
-            icon:"error"
-          })
           return;
         }
         resolve(res.data)

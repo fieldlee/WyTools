@@ -32,7 +32,7 @@
   width: 100%;
   overflow: hidden;
   padding: var(--td-cell-vertical-padding, 32rpx) var(--td-cell-horizontal-padding, 32rpx);
-  line-height: var(--td-cell-line-height, 48rpx);
+  line-height: var(--td-cell-line-height, 30rpx);
   height: var(--td-cell-height, auto);
   background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));
 }
@@ -78,7 +78,7 @@
 }
 .t-cell__title-text {
   display: flex;
-  font-size: var(--td-cell-title-font-size, var(--td-font-size-m, 32rpx));
+  font-size: var(--td-cell-title-font-size, var(--td-font-size-m, 24rpx));
   color: var(--td-cell-title-color, var(--td-font-gray-1, rgba(0, 0, 0, 0.9)));
   font-weight: 400;
 }

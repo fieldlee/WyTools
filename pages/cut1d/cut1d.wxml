@@ -47,7 +47,7 @@
 <!--显示计算按钮-->
 <view class="input-example">
     <view class="t-view-button">
-        <t-button theme="primary" icon="app" size="medium" bind:tap="calcuStockByLen">
+        <t-button theme="primary" icon="chart-bar" size="medium" bind:tap="calcuStockByLen">
             按长度计算
         </t-button>
         <t-button theme="primary" icon="app" theme="light" size="medium" bind:tap="calcuStockByWeight">
@@ -58,42 +58,26 @@
 <view class="input-example">
     <view class="demo-title">解决方案</view>
     <t-row>
-        <t-col span="12" t-class="light">
-            <t-cell-group>
-                <t-cell title="单行标题" leftIcon="service" hover />
-                <t-cell title="单行标题" leftIcon="internet" hover />
-                <t-cell title="单行标题" leftIcon="lock-on" hover />
-            </t-cell-group>
-        </t-col>
-        <t-col span="12" t-class="light">
-            <t-cell-group>
-                <t-cell title="单行标题" leftIcon="service" hover />
-                <t-cell title="单行标题" leftIcon="internet" hover />
-                <t-cell title="单行标题" leftIcon="lock-on" hover />
-                <t-cell title="单行标题" leftIcon="lock-on" hover />
-            </t-cell-group>
-        </t-col>
-        <t-col span="12" t-class="light">
-            <t-cell-group>
-                <t-cell title="单行标题" leftIcon="service" hover />
-                <t-cell title="单行标题" leftIcon="internet" hover />
-                <t-cell title="单行标题" leftIcon="lock-on" hover />
-            </t-cell-group>
+        <t-col span="12" t-class="light" wx:for="{{mode_data.childs_for_select}}" wx:for-index="idx" wx:for-item="item">
+            <senx_table columns="{{solutionCol.columns}}" data="{{item.sub_child_solver}}"  marginTopValues="2" bindrowClick='orderLineRowClick' />
+            <t-cell bordered="false" title="损耗宽度" hover note="{{item.worstWidth}}" >
+            </t-cell>
+            <t-button theme="primary" icon="check-circle" theme="light" size="small" data-idx="{{idx}}" bind:tap="selectSol" >选择</t-button>
         </t-col>
     </t-row>
 </view>
 <!--显示绘制效果图-->
-<view class="input-example">
+<!-- <view class="input-example">
     <view class="demo-title">解决方案图例</view>
     <view>
         <canvas type="2d" id="myCanvas"></canvas>
     </view>
-</view>
+</view> -->
 <!--表格显示-->
 <view>
     <view class="demo-title">解决方案明细</view>
     <view>
-        <senx_table columns="{{orderLinesData.columns}}" data="{{orderLinesData.data}}" height="500" marginTopValues="2" isScrollX bindbtnClick='orderLineDeleteBtnClick' bindrowClick='orderLineRowClick' />
+        <senx_table columns="{{resultCol.columns}}" data="{{resultCol.data}}" marginTopValues="2" isScrollX bindbtnClick='orderLineDeleteBtnClick' bindrowClick='orderLineRowClick' />
 
     </view>
 </view>
