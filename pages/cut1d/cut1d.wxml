@@ -12,10 +12,10 @@
     <view>
       <t-row>
   <t-col span="8" >
-    <t-input layout="horizontal" size="small" tips="边丝宽度" type="number" align="left" value="{{side}}" data-field-name="side" bind:change='handleInputChange' />
+    <t-input style="margin-right: 7rpx;" layout="horizontal" size="small" tips="边丝宽度" type="number" align="left" value="{{side}}" data-field-name="side" bind:change='handleInputChange' />
   </t-col>
   <t-col span="8" >
-    <t-input layout="horizontal"  tips="最低使用率" type="number" align="left" value="{{percent}}" data-field-name="percent" bind:change='handleInputChange' />
+    <t-input style="margin-left: 7rpx;" layout="horizontal"  tips="最低使用率" type="number" align="left" value="{{percent}}" data-field-name="percent" bind:change='handleInputChange' />
   </t-col>
   <t-col span="8" >
     <view class="t-view-right">
@@ -35,8 +35,9 @@
     <block wx:for="{{mode_data.childs}}" wx:for-index="idx" wx:for-item="item">
         <view class="t-view">
             <t-input placeholder="请输入长度" suffix="" align="left" type="number" value="{{item.width}}" data-field-name="mode_data.childs[{{idx}}].width" bind:change='handleInputChange' />
-            <t-input placeholder="请输入个数" suffix="" align="left" type="number" value="{{item.quantity}}" data-field-name="mode_data.childs[{{idx}}].quantity" bind:change='handleInputChange' />
             <t-input placeholder="请输入预定重量" suffix="" align="left" type="number" value="{{item.weight}}" data-field-name="mode_data.childs[{{idx}}].weight" bind:change='handleInputChange' />
+            <t-input placeholder="请输入个数" suffix="" align="left" type="number" value="{{item.quantity}}" data-field-name="mode_data.childs[{{idx}}].quantity" bind:change='handleInputChange' />
+            
         </view>
     </block>
     <view class="t-view-right">
@@ -55,7 +56,7 @@
     </view>
 </view>
 <!--显示待选方案-->
-<view class="input-example">
+<view class="input-example" wx:if="{{cutRules==true}}">
     <view class="demo-title">解决方案</view>
     <t-row>
         <t-col span="12" t-class="light" wx:for="{{mode_data.childs_for_select}}" wx:for-index="idx" wx:for-item="item">

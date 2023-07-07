@@ -29,7 +29,7 @@
   background-color: var(--td-input-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));
   display: flex;
   flex: 1;
-  padding: var(--td-input-vertical-padding, 32rpx);
+  padding: var(--td-input-vertical-padding, 20rpx);
 }
 .t-input--border {
   position: relative;
@@ -61,7 +61,7 @@
   display: flex;
 }
 .t-input__icon--prefix {
-  font-size: 48rpx;
+  font-size: 32rpx;
   color: var(--td-input-prefix-icon-color, var(--td-font-gray-1, rgba(0, 0, 0, 0.9)));
 }
 .t-input__label:not(:empty) {
@@ -155,7 +155,7 @@
 }
 .t-input__placeholder {
   color: var(--td-input-placeholder-text-color, var(--td-text-color-placeholder, var(--td-font-gray-3, rgba(0, 0, 0, 0.4))));
-  font-size: var(--td-font-size-m, 32rpx);
+  font-size: var(--td-font-size-m, 24rpx);
 }
 .t-input__tips {
   font-size: var(--td-font-size-s, 24rpx);

@@ -4,7 +4,7 @@ import {
     stock1DbyLen,
     stock1DByWeight
 } from "../../api/apis";
-
+import Toast from 'tdesign-miniprogram/toast/index';
 Page({
     data: {
         backTopTheme: 'round',
@@ -25,11 +25,11 @@ Page({
                     width: 30
                 }, {
                     key: 'effect_width',
-                    title: '有效宽度'
+                    title: '宽度'
                 },
                 {
                     key: 'effect_weight',
-                    title: '有效重量'
+                    title: '重量'
                 },
                 {
                     key: 'use_precent',
@@ -104,7 +104,6 @@ Page({
     },
     onToTop(e) {
         console.log('backToTop', e);
-        this.clearDraw();
     },
     parentReduce(e) {
         console.log(e);
@@ -147,11 +146,20 @@ Page({
     },
     calcuStockByLen(e) {
         this.setData({
-            "cutRules": true
+            "cutRules": true,
+            "resultCol.data": [],
+            "mode_data.result.solutions":[],
+            "mode_data.childs_for_select":[]
         })
+        wx.showLoading({
+            title: '计算中...',
+            icon: "loading",
+            mask: true,
+        });
         let prepareData = this.prepareDataToSend1DForRule();
         stock1DbyLen(prepareData).then(response => {
             console.log(response);
+            wx.hideLoading();
             if (response.code == 0) {
                 response.data.solutions.forEach((sol) => {
                     if (sol.sub_child_solver.length > 0) {
@@ -187,19 +195,58 @@ Page({
                 icon: "error"
             });
         }).catch(err => {
+            wx.hideLoading();
             console.log("err");
             console.log(err);
         });
     },
     calcuStockByWeight(e) {
         this.setData({
-            "cutRules": false
+            "cutRules": false,
+            "resultCol.data": [],
+            "mode_data.result.solutions":[],
+            "mode_data.childs_for_select":[]
         })
         console.log(e);
+        wx.showLoading({
+            title: '计算中...',
+            icon: "loading",
+            mask: true,
+        });
+        let parent_width = 0;
+        let all_weight = 0;
+        this.data.mode_data.parents.forEach((parent) => {
+            parent_width += parseFloat(parent.width) * parseFloat(parent.quantity);
+            all_weight += parseFloat(parent.weight) * parseFloat(parent.quantity);
+        });
+        let child_list = [];
+
+        for (let i = 0; i < this.data.mode_data.childs.length; i++) {
+            const child = this.data.mode_data.childs[i];
+            let s = (parseFloat(child.width) / parseFloat(parent_width)) * all_weight;
+            let n = Math.round(parseFloat(child.weight) / s);
+            child.quantity = n;
+
+            child_list.push(child);
+        }
+        this.setData({
+            "mode_data.childs": child_list
+        });
         let prepareData = this.prepareDataToSend1DForWeight();
-        stock1DByWeight(prepareData).then(res => {
-            console.log(res);
+        stock1DByWeight(prepareData).then(response => {
+            wx.hideLoading();
+            console.log(response);
+            if (response.code == 0) {
+                this.displayResult(response);
+                return
+            }
+            wx.showToast({
+                title: "计算有误请重试",
+                mask: true,
+                icon: "error"
+            });
         }).catch(err => {
+            wx.hideLoading();
             console.log(err);
         });
     },
@@ -250,6 +297,15 @@ Page({
     prepareDataToSend1DForWeight: function () {
         let newChilds = [];
         this.data.mode_data.childs.forEach((child) => {
+            if ((isNaN(parseInt(parseFloat(child.width))) == true) || (isNaN(parseInt(parseFloat(child.weight))) == true)) {
+                wx.showToast({
+                    title: "分条数据有误",
+                    mask: true,
+                    icon: "error"
+                });
+                return
+            }
+
             newChilds.push({
                 "quantity": parseInt(child.quantity),
                 "width": parseInt(parseFloat(child.width) * 1000)
@@ -258,6 +314,14 @@ Page({
 
         let newParents = [];
         this.data.mode_data.parents.forEach((parent) => {
+            if (isNaN(parseInt(parseFloat(parent.width))) == true) {
+                wx.showToast({
+                    title: "母卷数据有误",
+                    mask: true,
+                    icon: "error"
+                });
+                return
+            }
             let worst_weight = Math.round((parseFloat(this.data.side) / parseFloat(parent.width)) * (parseFloat(parent.weight) * 1000));
             newParents.push({
                 "quantity": parseInt(parent.quantity),
@@ -369,14 +433,42 @@ Page({
                 let all_weight = Math.round(parseFloat(soluton.parent_weight)) / 1000;
                 rolls.push([parseFloat(soluton.un_used / 1000), subs, parseFloat(soluton.un_used_weight / 1000), subs_weight, all_len, all_weight]);
             });
-            this.setData({
-                "mode_data.result.solutions": rolls
-            });
 
+            const bigRolls = this.sortBigRolls(rolls);
+
+            this.setData({
+                "mode_data.result.solutions": bigRolls
+            });
+            //按照重量计算显示结果处理===========start============不需要select
+            let result_data = [];
+            let index = 0;
+            console.log(this.data.mode_data.result.solutions);
+            this.data.mode_data.result.solutions.forEach((sol) => {
+                index = index + 1;
+                let result = {
+                    "index": index,
+                    "effect_width": sol[4],
+                    "effect_weight": sol[5],
+                    "use_precent": this.getPercentageUtilization(sol[0], sol[1]) + "%",
+                    "wirst_width": sol[0],
+                    "wirst_weight": sol[2],
+                    "detail": sol[3].join(',')
+                };
+                result_data.push(result);
+            });
+            this.setData({
+                "resultCol.data": result_data
+            });
+            //按照重量计算显示结果处理===========end============
+            //  设置真实的重量
             let child_index = 0;
+            let child_list = this.data.mode_data.childs;
             this.data.mode_data.result.data.sub_weights.forEach((weight) => {
-                this.data.mode_data.childs[child_index].weight = parseFloat(weight / 1000);
+                child_list[child_index].weight = parseFloat(weight / 1000);
                 child_index += 1;
+            });
+            this.setData({
+                "mode_data.childs": child_list
             });
         } else {
             let rolls = [];
@@ -399,6 +491,7 @@ Page({
             this.setData({
                 "mode_data.result.solutions": rolls
             });
+
         }
     },
     draw1d() {
@@ -482,8 +575,12 @@ Page({
             let all_weight = Math.round(parseFloat(soluton.parent_weight)) / 1000;
             rolls.push([parseFloat(soluton.un_used / 1000), subs, parseFloat(soluton.un_used_weight / 1000), subs_weight, all_len, all_weight]);
         });
+
+        // const unSortedBigRolls = this.mode_data.result.solutions;
+        const bigRolls = this.sortBigRolls(rolls);
+        // this.mode_data.result.solutions = bigRolls;
         this.setData({
-            "mode_data.result.solutions": rolls
+            "mode_data.result.solutions": bigRolls
         });
         //计算显示
         let result_data = [];

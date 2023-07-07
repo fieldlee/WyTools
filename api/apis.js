@@ -10,6 +10,8 @@ export function stock1DbyLen(data){
 }
 //计算按重量计算1d
 export function stock1DByWeight(data){
+    console.log("stock1DByWeight");
+    console.log(data);
   return request({
     url:"/api/stocks_1d_by_weight",
     method:"POST",
