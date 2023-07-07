@@ -36,11 +36,11 @@ Page({
                     title: '使用率'
                 },
                 {
-                    key: 'wirst_width',
+                    key: 'worst_width',
                     title: '损耗宽度'
                 },
                 {
-                    key: 'wirst_weight',
+                    key: 'worst_weight',
                     title: '损耗重量'
                 },
                 {
@@ -56,7 +56,7 @@ Page({
                 width: "",
                 quantity: "",
                 weight: ""
-            }, ],
+            }],
             parents: [{
                 width: "",
                 quantity: "",
@@ -91,6 +91,7 @@ Page({
             '#2c3e50', // Midnight Blue <- use for wasted part
         ],
         wasteColor: "#7f8c8d",
+        colorDict:{}
     },
     parentAdd(e) {
         this.data.mode_data.parents.push({
@@ -106,7 +107,6 @@ Page({
         console.log('backToTop', e);
     },
     parentReduce(e) {
-        console.log(e);
         if (this.data.mode_data.parents.length > 1) {
             const index = this.data.mode_data.parents.length - 1;
             this.data.mode_data.parents.splice(index, 1);
@@ -148,9 +148,11 @@ Page({
         this.setData({
             "cutRules": true,
             "resultCol.data": [],
-            "mode_data.result.solutions":[],
-            "mode_data.childs_for_select":[]
-        })
+            "mode_data.result.solutions": [],
+            "mode_data.childs_for_select": [],
+            "colorDict" :{}
+        });
+        this.clearDraw(); //清空
         wx.showLoading({
             title: '计算中...',
             icon: "loading",
@@ -158,7 +160,7 @@ Page({
         });
         let prepareData = this.prepareDataToSend1DForRule();
         stock1DbyLen(prepareData).then(response => {
-            console.log(response);
+
             wx.hideLoading();
             if (response.code == 0) {
                 response.data.solutions.forEach((sol) => {
@@ -185,7 +187,7 @@ Page({
                 this.setData({
                     "mode_data.childs_for_select": response.data.solutions
                 });
-                console.log(this.data.mode_data.childs_for_select);
+                // console.log(this.data.mode_data.childs_for_select);
                 this.displayResult(response);
                 return
             }
@@ -204,10 +206,11 @@ Page({
         this.setData({
             "cutRules": false,
             "resultCol.data": [],
-            "mode_data.result.solutions":[],
-            "mode_data.childs_for_select":[]
-        })
-        console.log(e);
+            "mode_data.result.solutions": [],
+            "mode_data.childs_for_select": [],
+            "colorDict" :{}
+        });
+        this.clearDraw(); //清空
         wx.showLoading({
             title: '计算中...',
             icon: "loading",
@@ -235,7 +238,7 @@ Page({
         let prepareData = this.prepareDataToSend1DForWeight();
         stock1DByWeight(prepareData).then(response => {
             wx.hideLoading();
-            console.log(response);
+            // console.log(response);
             if (response.code == 0) {
                 this.displayResult(response);
                 return
@@ -400,6 +403,7 @@ Page({
         return percentage;
     },
     displayResult(response) {
+        this.clearDraw(); // 清空画布
         if (response.data && response.data.status_name) {
             if (response.data.status_name == "Error") {
                 wx.showToast({
@@ -442,7 +446,7 @@ Page({
             //按照重量计算显示结果处理===========start============不需要select
             let result_data = [];
             let index = 0;
-            console.log(this.data.mode_data.result.solutions);
+            // console.log(this.data.mode_data.result.solutions);
             this.data.mode_data.result.solutions.forEach((sol) => {
                 index = index + 1;
                 let result = {
@@ -450,8 +454,8 @@ Page({
                     "effect_width": sol[4],
                     "effect_weight": sol[5],
                     "use_precent": this.getPercentageUtilization(sol[0], sol[1]) + "%",
-                    "wirst_width": sol[0],
-                    "wirst_weight": sol[2],
+                    "worst_width": sol[0],
+                    "worst_weight": sol[2],
                     "detail": sol[3].join(',')
                 };
                 result_data.push(result);
@@ -493,6 +497,7 @@ Page({
             });
 
         }
+        
     },
     draw1d() {
         const query = wx.createSelectorQuery()
@@ -504,35 +509,56 @@ Page({
             .exec((res) => {
                 const canvas = res[0].node
                 const ctx = canvas.getContext('2d')
-                ctx.clearRect(0, 0, canvas.width, canvas.height); //清空画布
-                const dpr = wx.getSystemInfoSync().pixelRatio
+                let dpr = wx.getSystemInfoSync().pixelRatio;
+                dpr = 1;
+                // console.log(dpr,res[0].width,res[0].height);
                 canvas.width = res[0].width * dpr
                 canvas.height = res[0].height * dpr
-                ctx.scale(dpr, dpr)
+                ctx.scale(dpr, dpr);
+                ctx.clearRect(0, 0, canvas.width, canvas.height); //清空画布
+                ctx.fillStyle = "#7f8c8d";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
                 const unSortedBigRolls = this.data.mode_data.result.solutions;
                 const bigRolls = this.sortBigRolls(unSortedBigRolls);
                 const colorDict = this.getColorDict();
+                // 设置颜色
+                this.setData({
+                    "colorDict":colorDict
+                });
                 let parentWidth = this.data.mode_data.parents[0].width;
                 this.data.mode_data.parents.forEach((item) => {
                     if (item.width > parentWidth) {
                         parentWidth = item.width;
                     }
                 });
-                console.log(colorDict)
-                console.log(this.data.mode_data.result)
-                //     let graphWidth = canvas.width;
-                //     let xScale = d3
-                //     .scaleLinear()
-                //     .domain([0, parentWidth])
-                //     .range([0, graphWidth]);
-                // let yScale = d3
-                //     .scaleBand()
-                //     .domain(d3.range(bigRolls.length))
-                //     // .range([0, 20 * bigRolls.length])
-                //     .range([0, 100]);
-                //     ctx.fillRect(0, 0, canvas.width, canvas.height)
+                let graphWidth = canvas.width;
+                let margin = {
+                    top: 2,
+                    right: 2,
+                    bottom: 2,
+                    left: 2
+                };
+                let svgWidth = graphWidth - margin.left - margin.right;
+                let svgHeight = canvas.height - margin.top - margin.bottom;
+                let scaleWidth = svgWidth / parentWidth;
+                let x1 = 0;
+                let y1 = 0;
+                let height_line = parseInt(svgHeight / bigRolls.length);
+                for (let i = 0; i < bigRolls.length; i++) {
+                    const smallRolls = bigRolls[i][1];
+                    x1 = 2;
+                    y1 = height_line * i + 2;
+                    for (let j = 0; j < smallRolls.length; j++) {
+                        const smallRoll = smallRolls[j];
+                        const color = colorDict[smallRoll];
+                        const width_line = smallRoll * scaleWidth;
+                        const x_scale = x1 * scaleWidth;
+                        ctx.fillStyle = color;
+                        ctx.fillRect(x_scale, y1, width_line-1, height_line-1);
+                        x1 = x1 + smallRoll;
+                    }
+                }
             })
-
     },
     clearDraw() {
         const query = wx.createSelectorQuery()
@@ -549,9 +575,8 @@ Page({
     },
     selectSol(e) {
         let idx = parseInt(e.currentTarget.dataset.idx);
-        let selectdChild = this.data.mode_data.childs_for_select[idx];
-        console.log(selectdChild);
         this.setData({
+            "colorDict" :{},
             "mode_data.result": {
                 "data": {
                     "solutions": null,
@@ -585,7 +610,6 @@ Page({
         //计算显示
         let result_data = [];
         let index = 0;
-        console.log(this.data.mode_data.result.solutions);
         this.data.mode_data.result.solutions.forEach((sol) => {
             index = index + 1;
             let result = {
@@ -593,8 +617,8 @@ Page({
                 "effect_width": sol[4],
                 "effect_weight": sol[5],
                 "use_precent": this.getPercentageUtilization(sol[0], sol[1]) + "%",
-                "wirst_width": sol[0],
-                "wirst_weight": sol[2],
+                "worst_width": sol[0],
+                "worst_weight": sol[2],
                 "detail": sol[3].join(',')
             };
             result_data.push(result);
@@ -602,7 +626,7 @@ Page({
         this.setData({
             "resultCol.data": result_data
         });
-        console.log(this.data.resultCol.data);
+        this.draw1d();
     },
     methods: {
 

@@ -6,6 +6,7 @@
         "t-icon": "tdesign-miniprogram/icon/icon",
         "cax": "../../components/cax/cax",
         "t-fab": "tdesign-miniprogram/fab/fab",
+        "t-tag": "tdesign-miniprogram/tag/tag",
         "senx_table": "../../components/senx_table/senx_table"
     }
 }

@@ -10,23 +10,23 @@
     </block>
 
     <view>
-      <t-row>
-  <t-col span="8" >
-    <t-input style="margin-right: 7rpx;" layout="horizontal" size="small" tips="边丝宽度" type="number" align="left" value="{{side}}" data-field-name="side" bind:change='handleInputChange' />
-  </t-col>
-  <t-col span="8" >
-    <t-input style="margin-left: 7rpx;" layout="horizontal"  tips="最低使用率" type="number" align="left" value="{{percent}}" data-field-name="percent" bind:change='handleInputChange' />
-  </t-col>
-  <t-col span="8" >
-    <view class="t-view-right">
-        <t-button theme="danger" style="margin-right: 20rpx;" size="small" icon="" shape="circle" aria-label="减少" bind:tap="parentReduce">-</t-button>
-        <t-button theme="primary" size="small" icon="" shape="circle" aria-label="添加" bind:tap="parentAdd">+</t-button>
-    </view>
-  </t-col>
-</t-row>
+        <t-row>
+            <t-col span="8">
+                <t-input style="margin-right: 7rpx;" layout="horizontal" size="small" tips="边丝宽度" type="number" align="left" value="{{side}}" data-field-name="side" bind:change='handleInputChange' />
+            </t-col>
+            <t-col span="8">
+                <t-input style="margin-left: 7rpx;" layout="horizontal" tips="最低使用率" suffix="%" type="number" align="left" value="{{percent}}" data-field-name="percent" bind:change='handleInputChange' />
+            </t-col>
+            <t-col span="8">
+                <view class="t-view-right">
+                    <t-button theme="danger" style="margin-right: 20rpx;" size="small" icon="" shape="circle" aria-label="减少" bind:tap="parentReduce">-</t-button>
+                    <t-button theme="primary" size="small" icon="" shape="circle" aria-label="添加" bind:tap="parentAdd">+</t-button>
+                </view>
+            </t-col>
+        </t-row>
     </view>
 
-    
+
 
 </view>
 <!--显示分条设置-->
@@ -37,7 +37,7 @@
             <t-input placeholder="请输入长度" suffix="" align="left" type="number" value="{{item.width}}" data-field-name="mode_data.childs[{{idx}}].width" bind:change='handleInputChange' />
             <t-input placeholder="请输入预定重量" suffix="" align="left" type="number" value="{{item.weight}}" data-field-name="mode_data.childs[{{idx}}].weight" bind:change='handleInputChange' />
             <t-input placeholder="请输入个数" suffix="" align="left" type="number" value="{{item.quantity}}" data-field-name="mode_data.childs[{{idx}}].quantity" bind:change='handleInputChange' />
-            
+
         </view>
     </block>
     <view class="t-view-right">
@@ -52,7 +52,7 @@
             按长度计算
         </t-button>
         <t-button theme="primary" icon="app" theme="light" size="medium" bind:tap="calcuStockByWeight">
-        按预定重量计算</t-button>
+            按预定重量计算</t-button>
     </view>
 </view>
 <!--显示待选方案-->
@@ -60,20 +60,23 @@
     <view class="demo-title">解决方案</view>
     <t-row>
         <t-col span="12" t-class="light" wx:for="{{mode_data.childs_for_select}}" wx:for-index="idx" wx:for-item="item">
-            <senx_table columns="{{solutionCol.columns}}" data="{{item.sub_child_solver}}"  marginTopValues="2" bindrowClick='orderLineRowClick' />
-            <t-cell bordered="false" title="损耗宽度" hover note="{{item.worstWidth}}" >
+            <senx_table columns="{{solutionCol.columns}}" data="{{item.sub_child_solver}}" marginTopValues="2" bindrowClick='orderLineRowClick' />
+            <t-cell bordered="false" title="损耗宽度" hover note="{{item.worstWidth}}">
             </t-cell>
-            <t-button theme="primary" icon="check-circle" theme="light" size="small" data-idx="{{idx}}" bind:tap="selectSol" >选择</t-button>
+            <t-button theme="primary" icon="check-circle" theme="light" size="small" data-idx="{{idx}}" bind:tap="selectSol">选择</t-button>
         </t-col>
     </t-row>
 </view>
 <!--显示绘制效果图-->
-<!-- <view class="input-example">
+<view class="input-example">
     <view class="demo-title">解决方案图例</view>
-    <view>
-        <canvas type="2d" id="myCanvas"></canvas>
+    <view class="block">
+        <t-tag class="margin-16" variant="light" wx:for="{{colorDict}}" wx:for-index="key"  wx:for-item="value" style="background-color: {{value}};">{{key}}</t-tag>
     </view>
-</view> -->
+    <view>
+        <canvas type="2d" style="height: 100rpx; margin-left: 10rpx;" id="myCanvas"></canvas>
+    </view>
+</view>
 <!--表格显示-->
 <view>
     <view class="demo-title">解决方案明细</view>

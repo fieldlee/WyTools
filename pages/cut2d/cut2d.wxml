@@ -1,2 +1,87 @@
-<!--pages/cut2d/cut2d.wxml-->
-<text>pages/cut2d/cut2d.wxml</text>
+<!--显示母卷设置-->
+<view class="input-example">
+    <view class="demo-title">母板设置</view>
+    <view class="t-view" wx:for="{{mode_data.parents}}" wx:for-index="idx" wx:for-item="item">
+        <t-input placeholder="请输入长度" suffix="" type="number" align="left" value="{{item.length}}" data-field-name="mode_data.parents[{{idx}}].length" bind:change='handleInputChange' />
+        <t-input placeholder="请输入宽度" suffix="" type="number" align="left" value="{{item.width}}" data-field-name="mode_data.parents[{{idx}}].width" bind:change='handleInputChange' />
+        <t-input placeholder="请输入个数" suffix="" type="number" align="left" value="{{item.quantity}}" data-field-name="mode_data.parents[{{idx}}].quantity" bind:change='handleInputChange' />
+        <t-input placeholder="请输入重量" suffix="" type="number" align="left" value="{{item.weight}}" data-field-name="mode_data.parents[{{idx}}].weight" bind:change='handleInputChange' />
+    </view>
+
+    <view>
+        <t-row>
+            <t-col span="8">
+                <t-input style="margin-right: 7rpx;" layout="horizontal" size="small" tips="切割宽度" type="number" align="left" value="{{cutWidth}}" data-field-name="side" bind:change='handleInputChange' />
+            </t-col>
+            <t-col span="8">
+                <t-input style="margin-left: 7rpx;" layout="horizontal" tips="最低使用率" suffix="%" type="number" align="left" value="{{percent}}" data-field-name="percent" bind:change='handleInputChange' />
+            </t-col>
+            <t-col span="8">
+                <view class="t-view-right">
+                    <t-button theme="danger" style="margin-right: 20rpx;" size="small" icon="" shape="circle" aria-label="减少" bind:tap="parentReduce">-</t-button>
+                    <t-button theme="primary" size="small" icon="" shape="circle" aria-label="添加" bind:tap="parentAdd">+</t-button>
+                </view>
+            </t-col>
+        </t-row>
+    </view>
+
+
+
+</view>
+<!--显示分条设置-->
+<view class="input-example">
+    <view class="demo-title">分块设置</view>
+    <view class="t-view" wx:for="{{mode_data.childs}}" wx:for-index="idx" wx:for-item="item">
+        <t-input placeholder="请输入长度" suffix="" align="left" type="number" value="{{item.length}}" data-field-name="mode_data.childs[{{idx}}].length" bind:change='handleInputChange' />
+        <t-input placeholder="请输入宽度" suffix="" align="left" type="number" value="{{item.width}}" data-field-name="mode_data.childs[{{idx}}].width" bind:change='handleInputChange' />
+        <t-input placeholder="请输入预定重量" suffix="" align="left" type="number" value="{{item.weight}}" data-field-name="mode_data.childs[{{idx}}].weight" bind:change='handleInputChange' />
+        <t-input placeholder="请输入个数" suffix="" align="left" type="number" value="{{item.quantity}}" data-field-name="mode_data.childs[{{idx}}].quantity" bind:change='handleInputChange' />
+    </view>
+
+    <view class="t-view-right">
+        <t-button theme="danger" style="margin-right: 20rpx;" size="small" icon="" shape="circle" aria-label="添加" bind:tap="childReduce">-</t-button>
+        <t-button theme="primary" size="small" icon="" shape="circle" aria-label="减少" bind:tap="childAdd">+</t-button>
+    </view>
+</view>
+<!--显示计算按钮-->
+
+<view class="t-view-button">
+    <t-button theme="primary" icon="app" size="medium" bind:tap="">
+        按长宽切割
+    </t-button>
+    <t-button theme="primary" icon="app" theme="light" size="medium" bind:tap="">
+        按重量切割</t-button>
+    <t-button theme="primary" icon="app" size="medium" bind:tap="">
+        按数量切割</t-button>
+</view>
+
+<!--显示待选方案-->
+<view class="input-example" wx:if="{{cutRules==true}}">
+    <view class="demo-title">解决方案</view>
+    <t-row>
+        <t-col span="12" t-class="light" wx:for="{{mode_data.childs_for_select}}" wx:for-index="idx" wx:for-item="item">
+            <senx_table columns="{{solutionCol.columns}}" data="{{item.sub_child_solver}}" marginTopValues="2" bindrowClick='orderLineRowClick' />
+            <t-cell bordered="false" title="损耗宽度" hover note="{{item.worstWidth}}">
+            </t-cell>
+            <t-button theme="primary" icon="check-circle" theme="light" size="small" data-idx="{{idx}}" bind:tap="selectSol">选择</t-button>
+        </t-col>
+    </t-row>
+</view>
+<!--显示绘制效果图-->
+<!-- <view class="input-example">
+    <view class="demo-title">解决方案图例</view>
+    <view>
+        <canvas type="2d" id="myCanvas"></canvas>
+    </view>
+</view> -->
+<!--表格显示-->
+<view>
+    <view class="demo-title">解决方案明细</view>
+    <view>
+        <senx_table columns="{{resultCol.columns}}" data="{{resultCol.data}}" marginTopValues="2" isScrollX bindbtnClick='orderLineDeleteBtnClick' bindrowClick='orderLineRowClick' />
+
+    </view>
+</view>
+
+<!--显示回到顶部-->
+<t-back-top text="{{backTopText}}" bind:to-top="onToTop"></t-back-top>
