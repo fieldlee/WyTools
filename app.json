@@ -29,18 +29,18 @@
         "list": [{
             "pagePath": "pages/cut1d/cut1d",
             "text": "分条",
-            "iconPath": "assets/format-line.png",
-            "selectedIconPath": "assets/format-line.png"
+            "iconPath": "assets/line_dark.png",
+            "selectedIconPath": "assets/line_white.png"
         }, {
             "pagePath": "pages/cut2d/cut2d",
             "text": "分块",
-            "iconPath": "assets/land-plots.png",
-            "selectedIconPath": "assets/land-plots.png"
+            "iconPath": "assets/format_dark.png",
+            "selectedIconPath": "assets/format_white.png"
         }, {
             "pagePath": "pages/profile/profile",
             "text": "我的",
-            "iconPath": "assets/account.png",
-            "selectedIconPath": "assets/account.png"
+            "iconPath": "assets/account_dark.png",
+            "selectedIconPath": "assets/account_white.png"
         }]
     },
     "style": "v2",

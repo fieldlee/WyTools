@@ -1,9 +1,7 @@
 import {
-    stock1DByWeight,
     stock2DByArea,
     stock2DByWeight
 } from "../../api/apis";
-import Toast from 'tdesign-miniprogram/toast/index';
 
 Page({
     data: {
@@ -57,16 +55,16 @@ Page({
         },
         mode_data: {
             childs: [{
-                length: "100",
-                width: "100",
+                length: "",
+                width: "",
                 quantity: "",
                 weight: ""
             }, ],
             parents: [{
-                length: "1200",
-                width: "1200",
-                quantity: "1",
-                weight: "5"
+                length: "",
+                width: "",
+                quantity: "",
+                weight: ""
             }],
             result: null,
             childs_for_select: null,

@@ -48,11 +48,11 @@
     </t-button>
   </t-col>
   <t-col span="8" >
-    <t-button style="width:100%" theme="primary" icon="app" theme="light" size="medium" data-typecut="weight" bind:tap="sendCutSheet">
+    <t-button style="width:100%" variant="outline" icon="control-platform" theme="light" size="medium" data-typecut="weight" bind:tap="sendCutSheet">
         按重量切割</t-button>
   </t-col>
   <t-col span="8" >
-    <t-button style="width:100%"  theme="danger" icon="app" size="medium" data-typecut="quantity" bind:tap="sendCutSheet">
+    <t-button style="width:100%"  theme="danger" icon="chart-bubble" size="medium" data-typecut="quantity" bind:tap="sendCutSheet">
         按数量切割</t-button>
   </t-col>
 </t-row>
