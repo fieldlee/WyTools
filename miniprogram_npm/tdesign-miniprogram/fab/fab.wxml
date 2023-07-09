@@ -3,7 +3,7 @@
 
 <view
   class="{{classPrefix}} class {{prefix}}-class"
-  style="left: 10px; bottom: 16px;{{_._style([style, customStyle])}}"
+  style="left: 10px; bottom: 10px;{{_._style([style, customStyle])}}"
 >
-<t-button  open-type="share" theme="primary" size="medium" icon="share" shape="circle" aria-label="添加" ></t-button>
+<t-button  open-type="share" theme="primary" size="large" icon="share" shape="circle" aria-label="添加" ></t-button>
 </view>
