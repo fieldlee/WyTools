@@ -96,6 +96,23 @@ Page({
         ],
         wasteColor: "#7f8c8d",
     },
+    onShareAppMessage: function (res) {
+        if (res.from === 'button') {
+          // 来自页面内转发按钮
+          console.log(res.target)
+        }
+        return {
+          title: '自定义转发标题',
+          path: '/page/user?id=123'
+        }
+    },
+    handleShare(e){
+        console.log(e);
+        wx.showShareMenu({
+            withShareTicket: true,
+            menus: ['shareAppMessage']
+        })
+    },
     parentAdd(e) {
         this.data.mode_data.parents.push({
             length: "",
@@ -244,7 +261,8 @@ Page({
         this.setData({
             "mode_data.result": null,
             "mode_data.childs_for_select": [],
-            "cutRules": false
+            "cutRules": false,
+            "resultCol.data":[]
         });
         // 检查母板的输入参数
         for (let index = 0; index < this.data.mode_data.parents.length; index++) {
@@ -332,7 +350,8 @@ Page({
         this.setData({
             "mode_data.result": null,
             "mode_data.childs_for_select": [],
-            "cutRules": false
+            "cutRules": false,
+            "resultCol.data":[]
         });
         for (let index = 0; index < this.data.mode_data.parents.length; index++) {
             const element = this.data.mode_data.parents[index];
@@ -530,8 +549,10 @@ Page({
         
     },
     drawRect: function (sol, index) {
-        const parentWidth = parseFloat(this.data.mode_data.parents[index - 1].width);
-        const parentHeight = parseFloat(this.data.mode_data.parents[index - 1].length);
+        console.log(this.data.mode_data.result);
+        console.log("index",index)
+        const parentWidth = parseFloat(this.data.mode_data.parents[0].width);
+        const parentHeight = parseFloat(this.data.mode_data.parents[0].length);
         // create svg element:
         let canvas_id = "#myCanvas" + index;
         console.log("canvas_id", canvas_id);

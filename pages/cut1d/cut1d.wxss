@@ -59,3 +59,10 @@
   .block .margin-16:not(:last-child) {
     margin-right: 32rpx;
   }
+
+  .share {
+      float: left;
+      height: 48rpx;
+      width: 48rpx;
+      position: fixed;
+  }

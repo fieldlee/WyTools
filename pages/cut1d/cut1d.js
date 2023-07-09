@@ -4,7 +4,7 @@ import {
     stock1DbyLen,
     stock1DByWeight
 } from "../../api/apis";
-import Toast from 'tdesign-miniprogram/toast/index';
+
 Page({
     data: {
         backTopTheme: 'round',
@@ -92,6 +92,23 @@ Page({
         ],
         wasteColor: "#7f8c8d",
         colorDict:{}
+    },
+    onShareAppMessage: function (res) {
+        if (res.from === 'button') {
+          // 来自页面内转发按钮
+          console.log(res.target)
+        }
+        return {
+          title: '自定义转发标题',
+          path: '/page/user?id=123'
+        }
+    },
+    handleShare(e){
+        console.log(e);
+        wx.showShareMenu({
+            withShareTicket: true,
+            menus: ['shareAppMessage']
+        })
     },
     parentAdd(e) {
         this.data.mode_data.parents.push({
@@ -635,7 +652,16 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-
+        wx.showShareMenu({
+            withShareTicket: true,
+            menus: ['shareAppMessage'],
+            success(res){
+              console.log('分享渲染成功')
+            },
+            fail(e){
+              console.error('分享渲染失败')
+            },
+          })
     },
 
     /**

@@ -21,6 +21,7 @@
                 <view class="t-view-right">
                     <t-button theme="danger" style="margin-right: 20rpx;" size="small" icon="" shape="circle" aria-label="减少" bind:tap="parentReduce">-</t-button>
                     <t-button theme="primary" size="small" icon="" shape="circle" aria-label="添加" bind:tap="parentAdd">+</t-button>
+                    
                 </view>
             </t-col>
         </t-row>
@@ -85,6 +86,9 @@
 
     </view>
 </view>
-
+<view style="height: 120rpx;">
+</view>
 <!--显示回到顶部-->
 <t-back-top text="{{backTopText}}" bind:to-top="onToTop"></t-back-top>
+<!--share-->
+<t-fab icon="share" open-type="share" bind:click="handleShare" aria-label="分享"></t-fab>

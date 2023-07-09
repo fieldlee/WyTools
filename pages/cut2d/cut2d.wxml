@@ -95,6 +95,9 @@
         <senx_table columns="{{resultCol.columns}}" data="{{resultCol.data}}" marginTopValues="2" isScrollX bindbtnClick='orderLineDeleteBtnClick' bindrowClick='orderLineRowClick' />
     </view>
 </view>
-
+<view style="height: 120rpx;">
+</view>
 <!--显示回到顶部-->
 <t-back-top text="{{backTopText}}" bind:to-top="onToTop"></t-back-top>
+<!--share-->
+<t-fab icon="share" open-type="share" bind:click="handleShare" aria-label="分享"></t-fab>
